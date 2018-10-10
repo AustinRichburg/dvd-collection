@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <script src="./lib/angular.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <title>Your DVD Collection</title>
+</head>
+<body ng-app="myApp">
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#add">Add DVD</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#collection">Your Collection</a>
+        </li>
+    </ul>
+
+    <div class="container tab-content" ng-controller="dvdCtrl">
+
+        <div id="add" class="tab-pane active show">
+            <h2>Add a DVD to Your Collection</h2>
+            <form class="movieForm" id="movieForm" ng-submit="formSubmit()">
+                <div class="form-group">
+                    <label for="dvd-title">Title</label>
+                    <input autocomplete="off" class="form-control" type="text" name="dvd-title" id="dvd-title">
+                </div>
+                <div class="form-group">
+                    <label for="dvd-year">Year</label>
+                    <input autocomplete="off" class="form-control" type="text" name="dvd-year" id="dvd-year">
+                </div>
+                <div class="form-group">
+                    <label for="dvd-format">Format</label>
+                    <select class="form-control" name="dvd-format" id="dvd-format">
+                        <option value="dvd">DVD</option>
+                        <option value="blu-ray">Blu-Ray</option>
+                        <option value="4k">4K</option>
+                        <option value="steelbook">SteelBook</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="times-watched">Times Watched</label>
+                    <input class="form-control" type="number" name="times-watched" id="times-watched">
+                </div>
+                <input class="btn btn-block btn-dark" type="submit">
+            </form>
+            <div id="hint" class="hide"><p id="hint-text">Movie added to your collection!</p></div>
+        </div>
+
+        <div id="collection" class="tab-pane">
+            <h3>Your Collection</h3>
+            <ul>
+                <li ng-repeat="movie in movies">
+                    <div>{{ movie.title }} ({{ movie.year }}) - {{ movie.format }} - Watched {{ movie.watched }} times.
+                        <button ng-click="deleteMovie($index)">Delete</button></div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
