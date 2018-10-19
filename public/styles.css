@@ -1,0 +1,88 @@
+body {
+    background-color: #311d3f;
+    color: #e23e57;
+}
+
+label {
+    font-size: 1.1em;
+}
+
+i.fas {
+    cursor: pointer;
+    margin: 0 4px;
+}
+
+.nav {
+    border-bottom: 1px solid black !important;
+}
+
+.nav-link {
+    color: white;
+}
+
+.nav-link:hover {
+    color: white;
+}
+
+.nav-link.active {
+    background-color: #522546 !important;
+    border: 1px solid black !important;
+    color: #e23e57 !important;
+}
+
+div.container {
+    margin-top: 15px;
+}
+
+ul.nav-tabs {
+    background-color: #88304e;
+    padding: 20px 0 0 5px;
+}
+
+form.movieForm {
+    margin: 10px 20px 60px 20px;
+}
+
+form.movieForm > div > input {
+    padding: 8px 0 4px 10px;
+    transition: transform 0.2s;
+}
+
+form.movieForm > div > input:focus {
+    border-left: 10px solid orange;
+    -webkit-transform: translateX(15px);
+    transform: translateX(15px);
+}
+
+form > input[type=submit]{
+    margin: 30px 0 0 0;
+}
+
+input[type=submit] {
+    background-color: #88304e;
+}
+
+input[type=submit]:hover {
+    background-color: #522546;
+}
+
+#collection {
+    text-align: center;
+}
+
+#collection ul {
+    list-style-type: none;
+    padding: 0;
+    width: 600px;
+    margin: 0 auto;
+}
+
+#collection ul > li {
+    margin: 5px 0 5px 0;
+    max-lines: 1;
+    overflow: hidden;
+}
+
+#collection ul > li .collection-btns{
+    float: right;
+}

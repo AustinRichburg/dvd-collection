@@ -1,0 +1,21 @@
+<form class="movieForm" id="movieForm" ng-submit="filter()">
+    <div class="form-group">
+        <label for="dvd-title">Title</label>
+        <input autocomplete="off" class="form-control" ng-model="search.title" type="text" name="dvd-title" id="dvd-title">
+    </div>
+    <div class="form-group">
+        <label for="dvd-year">Year</label>
+        <input autocomplete="off" class="form-control" ng-model="search.year" type="text" name="dvd-year" id="dvd-year">
+    </div>
+</form>
+<div class="form-group">
+    <label for="order-by">Order By: </label>
+    <select name="order-by" id="order-by" ng-model="orderBy.order">
+        <option value="title">Title (A-Z)</option>
+        <option value="-title">Title (Z-A)</option>
+        <option value="-year">Year (Newest First)</option>
+        <option value="year">Year (Oldest First)</option>
+        <option value="-watched">Watched (Most)</option>
+        <option value="watched">Watched (Least)</option>
+    </select>
+</div>
