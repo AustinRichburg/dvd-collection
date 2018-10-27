@@ -5,8 +5,13 @@ var bodyParser = require("body-parser");
 var seedDB = require("./seeds");
 var DVD = require("./models/dvd");
 
-seedDB();
-mongoose.connect("mongodb://localhost/dvd-collection");
+//seedDB();
+//mongoose.connect("mongodb://localhost/dvd-collection");
+mongoose.connect(process.env.DATABASEURL)
+    .then(
+        () => { console.log("Connected to database!"); },
+        err => { console.log(err); }
+    );
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
