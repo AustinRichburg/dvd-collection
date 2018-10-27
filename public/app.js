@@ -1,48 +1,55 @@
 var app = angular.module("myApp", []);
 
-var movies = [
-    {
-        title: "The Thing",
-        year: "1982",
-        format: "SteelBook",
-        watched: "8"
-    },
-    {
-        title: "Alien Covenant",
-        year: "2017",
-        format: "SteelBook",
-        watched: "5"
-    },
-    {
-        title: "Re-Animator",
-        year: "1985",
-        format: "SteelBook",
-        watched: "3"
-    },
-    {
-        title: "Fight Club",
-        year: "1999",
-        format: "SteelBook",
-        watched: "2"
-    },
-];
+app.controller('mainCtrl', function($scope, $http){
+    // Holds the movie collection
+    $scope.movies = [];
 
-app.controller('mainCtrl', function($scope){
-    $scope.movies = movies;
+    // Gets the movie collection
+    $http.get("/api/movies")
+        .then(function(response){
+            $scope.movies = response.data;
+            console.log(response.data);
+        }, function(response){
+            console.log("Something went wrong");
+        });
+
+    // Holds the value in which the movie collection will be ordered (ie. title, year, etc)
     $scope.orderBy = {
         order: "title"
     };
+
+    // Holds the search value
     $scope.search = {};
+
+    // Holds the movie being edited
     $scope.selectedMovie = {};
+
+    // Called when a new movie is added to the collection
+    $scope.formSubmit = function(){
+        $http.post("/api/movies", createMovie())
+            .then(function(response){
+                console.log(response);
+                $scope.movies = response.data;
+                console.log($scope.movies);
+            }, function(response){
+                console.log("Something went wrong adding a movie");
+            });
+        document.getElementById("movieForm").reset();
+        displayHint();
+    };
+
+    // Called when the edit button is clicked. Populates the inputs with selected movie values
     $scope.editMovie = function(movie){
         $scope.selectedMovie = movie;
         document.querySelector(".modal-title").textContent = movie.title;
-        var inputs = document.querySelectorAll("#editModal form.movieForm input:not([type=submit]), #editModal form.movieForm select");
+        var inputs = document.querySelectorAll("#editModal .modal-body input:not([type=submit]), #editModal .modal-body select");
         inputs[0].value = movie.title;
         inputs[1].value = movie.year;
         inputs[2].value = movie.format.toLowerCase();
         inputs[3].value = movie.watched;
     };
+
+    // Called when the save button is selected in the edit screen. Updates the database with the edited movie.
     $scope.saveChanges = function(){
         var movie = $scope.selectedMovie;
         movie.title = document.querySelector("#editModal #dvd-title").value;
@@ -50,59 +57,23 @@ app.controller('mainCtrl', function($scope){
         movie.format = document.querySelector("#editModal #dvd-format").value;
         movie.watched = document.querySelector("#editModal #times-watched").value;
         console.log(movie);
+        $http.post("/api/movies/" + movie._id, movie)
+            .then(function(response){
+                console.log(response);
+            }, function(response){
+                console.log("Something went wrong updating the movie\n" + response);
+            });
     };
+
+    // Called when the delete button is selected. Removes the movie from the database.
     $scope.deleteMovie = function(movie){
-        movies.splice(movies.indexOf(movie), 1);
+        console.log(movie._id);
+        $http.delete("/api/movies/" + movie._id)
+            .then(function(response){
+                console.log($scope.movies);
+                $scope.movies = response.data;
+            }, function(response){
+                console.log("Something went wrong deleting the movie");
+            });
     };
 });
-
-app.controller('addCtrl', function($scope){
-    $scope.formSubmit = function(){
-        movies.push(createMovie());
-        document.getElementById("movieForm").reset();
-        displayHint();
-    };
-});
-
-app.controller('filterCtrl', function($scope){
-    $scope.filter = function(){
-        console.log("filtered");
-    };
-});
-
-var alert = `<div class="alert alert-success alert-dismissible">
-                Movie added to your collection!
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>`;
-
-function displayHint(){
-    document.getElementById("alert-container").innerHTML += alert;
-    setTimeout(() => {
-        $(".alert").alert("close");
-    }, 5000);
-};
-
-function createMovie(){
-    return {
-        title: isEmpty(document.getElementById("dvd-title").value, 'title'),
-        year: isEmpty(document.getElementById("dvd-year").value, 'year'),
-        format: document.getElementById("dvd-format").value,
-        watched: isEmpty(document.getElementById("times-watched").value, 'watched')
-    }
-};
-
-function isEmpty(str, type){
-    if(!str.trim() == "") {
-        return str;
-    }
-    else {
-        if(type === 'watched'){
-            return '0';
-        }
-        else{
-            return "Empty";
-        }
-    }
-};

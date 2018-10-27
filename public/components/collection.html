@@ -1,7 +1,7 @@
 <h3>Your Collection</h3>
     <ul>
         <li ng-repeat="movie in movies | orderBy: orderBy.order | filter:search">
-            <div>{{ movie.title }} ({{ movie.year }}) - {{ movie.format }} - Watched {{ movie.watched }} times.
+            <div>{{ movie.title }} ({{ movie.year }}) - {{ movie.format }} - Watched {{ movie.watched }} times. {{movie.date_added}}
                 <div class="collection-btns">
                     <i class="fas fa-edit" data-toggle="modal" data-target="#editModal" ng-click="editMovie(movie)"></i>
                     <i class="fas fa-trash-alt" ng-click="deleteMovie(movie)"></i>
