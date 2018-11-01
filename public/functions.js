@@ -31,7 +31,8 @@ function createMovie(){
         year: isEmpty(document.getElementById("dvd-year").value, 'year'),
         format: document.getElementById("dvd-format").value,
         watched: isEmpty(document.getElementById("times-watched").value, 'watched'),
-        date_added: `${date.getMonth()}-${date.getDate()}-${date.getFullYear()}`
+        rating: null,
+        date_added: `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`
     }
 };
 

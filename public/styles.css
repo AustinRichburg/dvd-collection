@@ -8,6 +8,12 @@ label {
     font-size: 1.1em;
 }
 
+hr {
+    margin-top: 0.1rem;
+    margin-bottom: 0.1rem;
+    border-top: 1px solid white;
+}
+
 /* ====================== NAV STYLES ======================== */
 .nav {
     border-bottom: 1px solid black !important;
@@ -65,28 +71,58 @@ input[type=submit]:hover {
 }
 
 /* ====================== COLLECTION STYLES ======================== */
-i.fas {
+i.fas, i.far {
     cursor: pointer;
     margin: 0 4px;
 }
 
 #collection {
     text-align: center;
+    margin-bottom: 100px;
 }
 
-#collection ul {
-    list-style-type: none;
-    padding: 0;
-    width: 600px;
-    margin: 0 auto;
+#collection table {
+    width: 100%;
 }
 
-#collection ul > li {
-    margin: 5px 0 5px 0;
-    max-lines: 1;
+#collection > table > tr > th, td {
+    padding: 10px;
+    border: 1px solid black;
+}
+
+#collection table tr th {
+    text-align: center;
+    font-size: 1.1em;
+}
+
+.stars {
+    font-family: "Font Awesome\ 5 Free";
+    position: relative;
+    display: inline-block;
+}
+
+.rating-star::before {
+    content: '\f005';
+}
+
+.stars-inner {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    white-space: nowrap;
     overflow: hidden;
+    width: 0;
+    pointer-events: none;
 }
 
-#collection ul > li .collection-btns{
-    float: right;
+.stars-outer::before {
+    content: '\f005';
+    cursor: pointer;
+    color: white;
+}
+
+.stars-inner::before {
+    content: "\f005 \f005 \f005 \f005 \f005";
+    font-weight: 900;
+    color: yellow;
 }

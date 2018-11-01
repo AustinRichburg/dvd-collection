@@ -6,7 +6,6 @@ var seedDB = require("./seeds");
 var DVD = require("./models/dvd");
 
 //seedDB();
-//mongoose.connect("mongodb://localhost/dvd-collection");
 mongoose.connect(process.env.DATABASEURL)
     .then(
         () => { console.log("Connected to database!"); },
@@ -35,6 +34,7 @@ app.post("/api/movies", function(req, res){
         year: req.body.year,
         format: req.body.format,
         watched: req.body.watched,
+        rating: req.body.rating,
         date_added: req.body.date_added
     }, function(err, movie){
         if(err){
@@ -56,7 +56,8 @@ app.post("/api/movies/:movie_id", function(req, res){
         title: req.body.title,
         year: req.body.year,
         format: req.body.format,
-        watched: req.body.watched
+        watched: req.body.watched,
+        rating: req.body.rating
     }},
         function(err, movie){
             if(err){
@@ -91,7 +92,7 @@ app.get("*", function(req, res){
     res.sendFile(__dirname + "/index.html");
 });
 
-app.listen(process.env.PORT || 5000, function(){
+app.listen(process.env.PORT || 3000, function(){
     console.log("Listening on port 3000...");
 });
 

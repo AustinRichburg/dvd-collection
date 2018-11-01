@@ -1,22 +1,21 @@
-<!-- TODO: add checks to the inputs (check for empty, correct formats, etc) -->
 <div class="form-group">
     <label for="dvd-title">Title</label>
-    <input autocomplete="off" class="form-control" type="text" name="dvd-title" id="dvd-title">
+    <input autocomplete="off" class="form-control" type="text" name="dvd-title" id="dvd-title" required>
 </div>
 <div class="form-group">
     <label for="dvd-year">Year</label>
-    <input autocomplete="off" class="form-control" type="text" name="dvd-year" id="dvd-year">
+    <input autocomplete="off" ng-minlength="4" ng-max-length="4" class="form-control" type="number" name="dvd-year" id="dvd-year" placeholder="ex. YYYY" required>
 </div>
 <div class="form-group">
     <label for="dvd-format">Format</label>
     <select class="form-control" name="dvd-format" id="dvd-format">
-        <option value="dvd">DVD</option>
-        <option value="blu-ray">Blu-Ray</option>
-        <option value="4k">4K</option>
-        <option value="steelbook">SteelBook</option>
+        <option value="DVD">DVD</option>
+        <option value="Blu-Ray">Blu-Ray</option>
+        <option value="4K">4K</option>
+        <option value="SteelBook">SteelBook</option>
     </select>
 </div>
 <div class="form-group">
     <label for="times-watched">Times Watched</label>
-    <input class="form-control" type="number" name="times-watched" id="times-watched">
+    <input class="form-control" min="0" type="number" name="times-watched" id="times-watched" required>
 </div>

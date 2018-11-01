@@ -9,6 +9,7 @@ var dvdSchema = new mongoose.Schema({
     year: Number,
     format: String,
     watched: Number,
+    rating: Number,
     date_added: String
 });
 

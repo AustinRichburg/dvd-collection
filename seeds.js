@@ -11,6 +11,7 @@ var movies = [
         year: "1982",
         format: "SteelBook",
         watched: "8",
+        rating: 5,
         date_added: "01-01-2018"
     },
     {
@@ -18,6 +19,7 @@ var movies = [
         year: "2017",
         format: "SteelBook",
         watched: "5",
+        rating: 2.5,
         date_added: "05-06-2018"
     },
     {
@@ -25,6 +27,7 @@ var movies = [
         year: "1985",
         format: "SteelBook",
         watched: "3",
+        rating: 4,
         date_added: "11-17-2018"
     },
     {
@@ -32,6 +35,7 @@ var movies = [
         year: "1999",
         format: "SteelBook",
         watched: "2",
+        rating: 5,
         date_added: "10-25-2018"
     },
 ];

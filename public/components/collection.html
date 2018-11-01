@@ -1,11 +1,30 @@
 <h3>Your Collection</h3>
-    <ul>
-        <li ng-repeat="movie in movies | orderBy: orderBy.order | filter:search">
-            <div>{{ movie.title }} ({{ movie.year }}) - {{ movie.format }} - Watched {{ movie.watched }} times. {{movie.date_added}}
-                <div class="collection-btns">
-                    <i class="fas fa-edit" data-toggle="modal" data-target="#editModal" ng-click="editMovie(movie)"></i>
-                    <i class="fas fa-trash-alt" ng-click="deleteMovie(movie)"></i>
-                </div>
+<table>
+    <tr class="row">
+        <th class="col-5">Title</th>
+        <th class="col-1">Year</th>
+        <th class="col-2">Format</th>
+        <th class="col-1">Times Watched</th>
+        <th class="col-2">Date Added</th>
+        <th class="col-1">Settings</th>
+    </tr>
+    <tr class="data row" ng-repeat="movie in movies | orderBy: orderBy.order | filter:search" ng-init="setStars(movie, $index)">
+        <td class="col-5">{{ movie.title }}
+            <div class="stars" ng-mouseleave="setStars(movie, $index)">
+                <span class="stars-outer"
+                    ng-repeat="x in [].constructor(number) track by $index"
+                    ng-mouseover="fillStars($parent.$index, $index)"
+                    ng-click="setRating(movie, $index+1)"></span>
+                <span class="stars-inner"></span>
             </div>
-        </li>
-    </ul>
+        </td>
+        <td class="col-1">{{ movie.year }}</td>
+        <td class="col-2">{{ movie.format }}</td>
+        <td class="col-1">{{ movie.watched }}</td>
+        <td class="col-2">{{movie.date_added}}</td>
+        <td class="col-1 collection-btns">
+            <i class="fas fa-edit" data-toggle="modal" data-target="#editModal" ng-click="editMovie(movie)"></i>
+            <i class="fas fa-trash-alt" ng-click="deleteMovie(movie)"></i>
+        </td>
+    </tr>
+</table>
