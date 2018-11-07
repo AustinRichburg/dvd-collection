@@ -1,48 +1,33 @@
 /* ====================== GENERAL STYLES ======================== */
 body {
-    background-color: #311d3f;
-    color: #e23e57;
+    background-color: #afa496;
+    color: #fcf3e7;
+    font-family: 'Lato';
 }
 
 label {
     font-size: 1.1em;
 }
 
-hr {
-    margin-top: 0.1rem;
-    margin-bottom: 0.1rem;
-    border-top: 1px solid white;
-}
-
 /* ====================== NAV STYLES ======================== */
-.nav {
-    border-bottom: 1px solid black !important;
+.navbar {
+    border-bottom: 1px solid #2F4F4F !important;
+    background-color: #7d756b;
 }
 
-.nav-link {
-    color: white;
+.nav-item {
+    color: #fcf3e7;
 }
 
-.nav-link:hover {
-    color: white;
+.nav-item:hover {
+    color: #fcf3e7;
 }
 
-.nav-link.active {
-    background-color: #522546 !important;
-    border: 1px solid black !important;
-    color: #e23e57 !important;
-}
-
+/* ====================== MOVIE FORM STYLES ======================== */
 div.container {
     margin-top: 15px;
 }
 
-ul.nav-tabs {
-    background-color: #88304e;
-    padding: 20px 0 0 5px;
-}
-
-/* ====================== MOVIE FORM STYLES ======================== */
 form.movieForm {
     margin: 10px 20px 60px 20px;
 }
@@ -63,11 +48,17 @@ form > input[type=submit]{
 }
 
 input[type=submit] {
-    background-color: #88304e;
+    background-color: #d7e6fa;
+    color: #2F4F4F;
 }
 
 input[type=submit]:hover {
-    background-color: #522546;
+    background-color: #96a1af;
+}
+
+/* ====================== FILTER STYLES ======================== */
+div.form-group > select {
+    padding: 5px 0 5px 10px;
 }
 
 /* ====================== COLLECTION STYLES ======================== */
@@ -87,7 +78,7 @@ i.fas, i.far {
 
 #collection > table > tr > th, td {
     padding: 10px;
-    border: 1px solid black;
+    border: 1px solid #fdf9f3;
 }
 
 #collection table tr th {

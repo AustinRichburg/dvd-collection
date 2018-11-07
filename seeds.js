@@ -4,6 +4,7 @@
 
 var mongoose = require("mongoose");
 var DVD = require("./models/dvd");
+var User = require("./models/user");
 
 var movies = [
     {
@@ -57,6 +58,12 @@ function seedDB(){
             })
         });
     });
+    User.remove({}, function(err){
+        if(err){
+            console.log(err);
+        }
+        console.log("removed all users");
+    })
 }
 
 module.exports = seedDB;

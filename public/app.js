@@ -9,9 +9,9 @@
  *      DONE fix the collection list to accomodate larger titles
  */
 
-var app = angular.module("myApp", []);
+var app = angular.module("myApp", ["ngRoute"]);
 
-app.controller('mainCtrl', function($scope, $http){
+app.controller('mainCtrl', function($scope, $http, $location){
     // Holds the movie collection
     $scope.movies = [];
 
@@ -126,4 +126,73 @@ app.controller('mainCtrl', function($scope, $http){
                 console.log("Something went wrong deleting the movie");
             });
     };
+
+    $scope.isActive = function(viewLocation){
+        return viewLocation === $location.path();
+    }
+
+    $scope.createUser = function(e){
+        var user = {
+            username: e.srcElement[0].value,
+            firstName: e.srcElement[1].value,
+            lastName: e.srcElement[2].value,
+            password: e.srcElement[3].value
+        };
+        $http.post("/api/register", user)
+            .then(function(response){
+                console.log("User created\n" + response);
+                $location.path("/add");
+            }, function(response){
+                console.log("There was a problem with your registration!");
+                console.log(response);
+                $location.path("/register");
+            });
+    };
+
+    $scope.login = function(e){
+        var user = {
+            username: e.srcElement[0].value,
+            password: e.srcElement[1].value
+        };
+        $http.post("/api/login", user)
+            .then(function(response){
+                //console.log("Login successful");
+                console.log(response.data);
+                if(response.data.user){
+                    var user = response.data.user;
+                    $scope.user = user;
+                    localStorage.setItem("currUser", JSON.stringify(user));
+                }
+            });
+    }
+
+    $scope.logout = function(){
+        console.log("logged you out");
+        $scope.user = null;
+        localStorage.removeItem("currUser");
+        $location.path("/login");
+    }
+
+    $scope.user = JSON.parse(localStorage.getItem("currUser"));
 });
+
+app.config(["$routeProvider", "$locationProvider", function($routeProvider, $locationProvider){
+    $routeProvider
+        .when("/", {
+            redirectTo: "/add"
+        })
+        .when("/add", {
+            templateUrl: "components/form-view.html"
+        })
+        .when("/filter", {
+            templateUrl: "components/filter-view.html"
+        })
+        .when("/login", {
+            templateUrl: "components/login.html"
+        })
+        .when("/register", {
+            templateUrl: "components/register.html"
+        });
+        $locationProvider.html5Mode(true);
+        $locationProvider.hashPrefix('');
+}]);

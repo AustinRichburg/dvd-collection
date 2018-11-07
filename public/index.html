@@ -3,44 +3,56 @@
 
 <head>
     <meta charset="UTF-8">
+    <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
         crossorigin="anonymous">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <script src="./lib/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
     <link rel="stylesheet" href="styles.css">
     <title>Your DVD Collection</title>
 </head>
 <body ng-app="myApp" ng-controller="mainCtrl">
 
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#add">Add an Entry</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#filter">Search</a>
-        </li>
-    </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">DVD Collection</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="container tab-content">
-
-        <div id="add" class="tab-pane active show">
-            <h2>Add a DVD to Your Collection</h2>
-            <form class="movieForm" id="movieForm" ng-submit="formSubmit()">
-                <div ng-include="'components/form.html'"></div>
-                <input class="btn btn-block" type="submit">
-            </form>
-            <div id="alert-container"></div>
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/add" ng-class="{ active: isActive('/add')}">Add a Movie<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/filter" ng-class="{ active: isActive('/filter')}">Search Your Collection</a>
+                </li>
+            </ul>
+            <span ng-switch on="!!user">
+                <ul ng-switch-when="true" class="navbar-nav my-2 my-lg-0">
+                    <li class="nav-item">
+                        <span class="nav-link">Welcome {{ user.username }}!</span>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/login" class="nav-link" ng-click="logout()">Logout</a>
+                    </li>
+                </ul>
+                <ul ng-switch-default class="navbar-nav my-2 my-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/login" class="nav-link">Login</a>
+                    </li>
+                </ul>
+            </span>
         </div>
+    </nav>
 
-        <div id="filter" class="tab-pane">
-            <div id="filter">
-                <h3>Filter</h3>
-                <div ng-include="'components/filter.html'"></div>
-            </div>
-        </div>
-
-    </div>
+   <div class="container ng-view"></div>
 
     <div id="collection" class="container" ng-include="'components/collection.html'"></div>
 
