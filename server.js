@@ -10,7 +10,7 @@ var userRoutes = require("./routes/users");
 
 //require("./passport");
 
-seedDB();
+//seedDB();
 mongoose.connect(process.env.DATABASEURL)
     .then(
         () => { console.log("Connected to database!"); },
