@@ -1,74 +1,80 @@
 var express = require("express");
 var router = express.Router();
 var DVD = require("../models/dvd");
+var User = require("../models/user");
+var middleware = require("../middleware/index");
 
 /** ============================== CRUD Functions ================================================ */
 
 /**
  * Gets the movies
  */
-router.get("/api/movies", function(req, res){
-    getMovies(res);
+router.get("/:id/movies", function(req, res){
+    getMovies(req, res);
 });
 
 /**
  * Creates a new movie and returns the updated movie collection.
  */
-router.post("/api/movies", function(req, res){
-    DVD.create({
-        title: req.body.title,
-        year: req.body.year,
-        format: req.body.format,
-        watched: req.body.watched,
-        rating: req.body.rating,
-        date_added: req.body.date_added
-    }, function(err, movie){
+router.post("/:id/movies", middleware.isLoggedIn, function(req, res){
+    User.findById(req.params.id, function(err, user){
         if(err){
-            res.send(err);
+            console.log(err);
+            return res.json({err: "User not found"});
         }
-        else{
+        DVD.create(req.body.movie, function(err, movie){
+            if(err){
+                return res.send(err);
+            }
+            user.dvd_collection.push(movie);
+            user.save(function(err){
+                if(err){
+                    return res.json({success: false, msg: "Something went wrong added a movie"});
+                }
+                getMovies(req, res);
+            });
             console.log("movie added");
-            getMovies(res);
-        }
+        });
     });
 });
 
 /**
  * Updates an existing movie and returns the updated movie collection.
  */
-router.post("/api/movies/:movie_id", function(req, res){
-    var id = req.params.movie_id;
-    DVD.update({_id: id}, {$set:{
-        title: req.body.title,
-        year: req.body.year,
-        format: req.body.format,
-        watched: req.body.watched,
-        rating: req.body.rating
-    }},
-        function(err, movie){
+router.post("/:id/movies/:movie_id", middleware.isLoggedIn, function(req, res){
+    User.findById(req.params.id, function(err, user){
+        if(err){
+            console.log(err);
+            res.json({err: "User not found"});
+        }
+        DVD.findByIdAndUpdate(req.params.movie_id, req.body.movie, function(err, movie){
             if(err){
-                res.send(err);
+                console.log(err);
+                res.json({err: "Movie could not be updated"});
             }
-            else{
-                getMovies(res);
-            }
+            console.log("Movie Updated");
+            res.send(movie);
         });
+    });
 });
 
 /**
  * Deletes a movie and returns the updated movie collection.
  */
-router.delete("/api/movies/:movie_id", function(req, res){
-    DVD.remove({
-        _id: req.params.movie_id
-    }, function(err, dvd){
+router.delete("/:id/movies/:movie_id", middleware.isLoggedIn, function(req, res){
+    User.findById(req.params.id, function(err, user){
         if(err){
             console.log(err);
+            res.json({err: "User not found"});
         }
-        else{
-            console.log("movie removed");
-            getMovies(res);
-        }
+        DVD.findByIdAndDelete(req.params.movie_id, function(err, movie){
+            if(err){
+                console.log(err);
+                res.json({err: "Could not delete movie"});
+            }
+            console.log("Movie deleted");
+        });
+        getMovies(req, res);
     });
 });
 
@@ -76,14 +82,13 @@ router.delete("/api/movies/:movie_id", function(req, res){
  * Gets all movies in the database.
  * @param {*} res The response being sent to the client. Returns all movies in the database.
  */
-function getMovies(res){
-    DVD.find(function(err, dvds){
+function getMovies(req, res){
+    User.findById(req.params.id).populate("dvd_collection").lean().exec(function(err, user){
         if(err){
             console.log(err);
+            res.json({err: "User not found"});
         }
-        else{
-            res.json(dvds);
-        }
+        return res.send(user.dvd_collection);
     });
 };
 

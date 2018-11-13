@@ -9,6 +9,22 @@ label {
     font-size: 1.1em;
 }
 
+.hide {
+    visibility: hidden;
+}
+
+.msg {
+    background-color: #89cff0;
+    opacity: 0.8;
+    height: 40px;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    line-height: 40px;
+}
+
 /* ====================== NAV STYLES ======================== */
 .navbar {
     border-bottom: 1px solid #2F4F4F !important;

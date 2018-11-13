@@ -6,6 +6,7 @@ var mongoose = require("mongoose");
 var DVD = require("./models/dvd");
 var User = require("./models/user");
 
+
 var movies = [
     {
         title: "The Thing",

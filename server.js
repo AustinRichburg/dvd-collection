@@ -8,8 +8,6 @@ var seedDB = require("./seeds");
 var movieRoutes = require("./routes/movies");
 var userRoutes = require("./routes/users");
 
-//require("./passport");
-
 //seedDB();
 mongoose.connect(process.env.DATABASEURL)
     .then(
@@ -22,11 +20,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({
     secret: "this project is fueled by Rockstar",
-    resave: false,
-    saveUninitialized: false
+    resave: true,
+    saveUninitialized: true
 }));
 
 app.use(passport.initialize());
+app.use(passport.session());
 
 require('./config/passport');
 

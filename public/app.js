@@ -1,22 +1,28 @@
 /**
  * TODO:
- *      add a user feature
+ *      DONE add a user feature
  *      DONE add a rating feature
  *      add a notes feature
  *
  * FIXME:
  *      fix the alerts
  *      DONE fix the collection list to accomodate larger titles
+ *      make usernames case insensitive
+ *      collection not updating immediately after post new movie
  */
 
 var app = angular.module("myApp", ["ngRoute"]);
 
-app.controller('mainCtrl', function($scope, $http, $location){
+app.controller('mainCtrl', function($scope, $http, $location, $route){
     // Holds the movie collection
-    $scope.movies = [];
+    $scope.movies = null;
 
     // Used in collection.html to create 5 empty rating stars
     $scope.number = 5;
+
+    $scope.user = JSON.parse(localStorage.getItem("currUser"));
+
+    $scope.msg = "";
 
     /**
      * Sets the rating stars for a movie on page load and on a rating update
@@ -46,7 +52,7 @@ app.controller('mainCtrl', function($scope, $http, $location){
     $scope.setRating = function(movie, score){
         movie.rating = score;
         console.log($scope.movies);
-        $http.post("/api/movies/" + movie._id, movie)
+        $http.post("/" + $scope.user._id + "/movies/" + movie._id, {movie: movie})
             .then(function(response){
                 console.log(response);
             }, function(response){
@@ -54,14 +60,17 @@ app.controller('mainCtrl', function($scope, $http, $location){
             });
     }
 
-    // Gets the movie collection
-    $http.get("/api/movies")
-        .then(function(response){
-            $scope.movies = response.data;
-            console.log(response.data);
-        }, function(response){
-            console.log("Something went wrong");
-        });
+    $scope.getMovies = function(){
+        if($scope.user){
+            var id = $scope.user._id;
+            $http.get("/" + id + "/movies", {params: {id: id}})
+                .then(function(response){
+                    $scope.movies = response.data;
+                }, function(response){
+                    console.log("Something went wrong");
+                });
+        }
+    };
 
     // Holds the value in which the movie collection will be ordered (ie. title, year, etc)
     $scope.orderBy = {
@@ -76,16 +85,20 @@ app.controller('mainCtrl', function($scope, $http, $location){
 
     // Called when a new movie is added to the collection
     $scope.formSubmit = function(){
-        $http.post("/api/movies", createMovie())
-            .then(function(response){
-                console.log(response);
-                $scope.movies = response.data;
-                console.log($scope.movies);
-            }, function(response){
-                console.log("Something went wrong adding a movie");
-            });
+        if($scope.user){
+            var movie = createMovie();
+            $http.post("/" + $scope.user._id + "/movies", {movie: movie})
+                .then(function(response){
+                    console.log(response.data);
+                    $scope.movies = response.data;
+                }, function(response){
+                    console.log("Something went wrong adding a movie");
+                });
+            displayHint();
+        } else {
+            $scope.msg = "You must be logged in to do that!";
+        }
         document.getElementById("movieForm").reset();
-        displayHint();
     };
 
     // Called when the edit button is clicked. Populates the inputs with selected movie values
@@ -106,8 +119,7 @@ app.controller('mainCtrl', function($scope, $http, $location){
         movie.year = document.querySelector("#editModal #dvd-year").value;
         movie.format = document.querySelector("#editModal #dvd-format").value;
         movie.watched = document.querySelector("#editModal #times-watched").value;
-        console.log(movie);
-        $http.post("/api/movies/" + movie._id, movie)
+        $http.post("/" + $scope.user._id + "/movies/" + movie._id, {movie: movie})
             .then(function(response){
                 console.log(response);
             }, function(response){
@@ -118,7 +130,7 @@ app.controller('mainCtrl', function($scope, $http, $location){
     // Called when the delete button is selected. Removes the movie from the database.
     $scope.deleteMovie = function(movie){
         console.log(movie._id);
-        $http.delete("/api/movies/" + movie._id)
+        $http.delete("/" + $scope.user._id + "/movies/" + movie._id)
             .then(function(response){
                 console.log($scope.movies);
                 $scope.movies = response.data;
@@ -140,8 +152,15 @@ app.controller('mainCtrl', function($scope, $http, $location){
         };
         $http.post("/api/register", user)
             .then(function(response){
-                console.log("User created\n" + response);
-                $location.path("/add");
+                console.log(JSON.stringify(response.data));
+                $scope.msg = response.data.msg;
+                if(response.data.success){
+                    var user = response.data.user;
+                    $scope.user = user;
+                    localStorage.setItem("currUser", JSON.stringify(user));
+                    $scope.getMovies();
+                    $location.path("/add");
+                }
             }, function(response){
                 console.log("There was a problem with your registration!");
                 console.log(response);
@@ -156,24 +175,44 @@ app.controller('mainCtrl', function($scope, $http, $location){
         };
         $http.post("/api/login", user)
             .then(function(response){
-                //console.log("Login successful");
                 console.log(response.data);
-                if(response.data.user){
+                if(response.data.success){
                     var user = response.data.user;
                     $scope.user = user;
                     localStorage.setItem("currUser", JSON.stringify(user));
+                    $scope.getMovies();
+                    $location.path("/add");
+                }
+                else{
+                    $scope.msg = response.data.msg;
                 }
             });
     }
 
     $scope.logout = function(){
-        console.log("logged you out");
-        $scope.user = null;
-        localStorage.removeItem("currUser");
-        $location.path("/login");
+        $http.post("/logout")
+            .then(function(response){
+                console.log(response.data);
+                console.log("logged you out");
+                $scope.user = null;
+                localStorage.removeItem("currUser");
+                $location.path("/login");
+                $scope.movies = null;
+                $scope.msg = "Logged You Out!";
+            }, function(response){
+                console.log(response.data);
+            });
     }
 
-    $scope.user = JSON.parse(localStorage.getItem("currUser"));
+    $scope.isLoggedIn = function(){
+        return localStorage.getItem("currUser") != null;
+    }
+
+    $scope.$on("$routeChangeStart", function($event, next, current){
+        $scope.msg = "";
+    });
+
+    $scope.getMovies();
 });
 
 app.config(["$routeProvider", "$locationProvider", function($routeProvider, $locationProvider){

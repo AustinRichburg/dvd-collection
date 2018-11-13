@@ -23,7 +23,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarContent">
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav mr-auto" ng-class="{hide: !isLoggedIn()}">
                 <li class="nav-item">
                     <a class="nav-link" href="/add" ng-class="{ active: isActive('/add')}">Add a Movie<span class="sr-only">(current)</span></a>
                 </li>
@@ -52,9 +52,13 @@
         </div>
     </nav>
 
+    <div class="container msg" ng-show="!!msg" id="msg">{{ msg }}</div>
+
    <div class="container ng-view"></div>
 
-    <div id="collection" class="container" ng-include="'components/collection.html'"></div>
+    <div id="collection" class="container" ng-show="!!user && movies.length > 0" ng-include="'components/collection.html'"></div>
+
+    <div class="container" ng-show="movies.length === 0">No movies currently in the collection</div>
 
     <div ng-include="'components/modal.html'"></div>
 

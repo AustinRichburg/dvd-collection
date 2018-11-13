@@ -3,12 +3,19 @@ var crypto = require("crypto");
 var jwt = require("jsonwebtoken");
 
 var UserSchema = new mongoose.Schema({
-    username: String,
+    username: {
+        type: String,
+        unique: true
+    },
+    dvd_collection: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "DVD"
+    }],
     firstName: String,
     lastName: String,
     hash: String,
     salt: String
-});
+}, { collation: { locale: 'en_US', strength: 2 } });
 
 UserSchema.methods.setPassword = function(password){
     this.salt = crypto.randomBytes(16).toString('hex');
