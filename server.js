@@ -18,10 +18,12 @@ mongoose.connect(process.env.DATABASEURL)
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.enable("trust proxy");
 app.use(session({
     secret: "this project is fueled by Rockstar",
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    proxy: true
 }));
 
 app.use(passport.initialize());
