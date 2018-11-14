@@ -14,6 +14,9 @@ I was looking for a way to view, manage, and update my growing collection of phy
 <ul>
   <li>Node.js</li>
   <li>MongoDB</li>
+  <li>PassportJS</li>
 </ul>
+
+Includes features to add, edit, delete, rate, and filter entries in a collection that is specific to each user.
 
 Uses RESTful API calls and a CRUD database management system written by me.
