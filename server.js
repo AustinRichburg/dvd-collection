@@ -23,6 +23,7 @@ app.use(session({
     secret: "this project is fueled by Rockstar",
     resave: true,
     saveUninitialized: true,
+    cookie: {_expires: (30 * 60 * 1000)},
     proxy: true
 }));
 

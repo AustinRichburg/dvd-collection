@@ -31,7 +31,7 @@ app.controller('mainCtrl', function($scope, $http, $location, $route){
      */
     $scope.setStars = function(movie, index){
         console.log("setting stars...");
-        document.querySelector("tr:nth-of-type(" + (index + 2) + ") > td > div.stars > span.stars-inner").style.width = (movie.rating * 20) + "%";
+        document.querySelector("tr:nth-of-type(" + (index + 1) + ") > th > div.stars > span.stars-inner").style.width = (movie.rating * 20) + "%";
     };
 
     /**
@@ -41,7 +41,7 @@ app.controller('mainCtrl', function($scope, $http, $location, $route){
      */
     $scope.fillStars = function(pIndex, index){
         var width = (index + 1) * 20;
-        document.querySelector("tr:nth-of-type(" + (pIndex + 2) + ") > td > div.stars > span.stars-inner").style.width = width + "%";
+        document.querySelector("tr:nth-of-type(" + (pIndex + 1) + ") > th > div.stars > span.stars-inner").style.width = width + "%";
     };
 
     /**

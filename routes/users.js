@@ -34,17 +34,28 @@ router.post("/api/login", middleware.usernameLowerCase, function(req, res, next)
         if(err) {
             return next(err);
         }
-        if(passportUser){
-            passportUser.token = passportUser.generateJwt();
-            return res.json({success: true, user: passportUser.toAuthJson()});
+        if(!passportUser){
+            return res.json({success: false, msg: "Username or password incorrect."});
         }
-        return res.json({success: false, msg: "Username or password incorrect."});
+        req.login(passportUser, function(err){
+            if(err){
+                console.log("ERROR\n" + err);
+                return next(err);
+            }
+            passportUser.token = passportUser.generateJwt();
+            console.log("logged in?");
+            return res.json({success: true, user: passportUser.toAuthJson()});
+        });
     })(req, res, next);
 });
 
-router.post("/logout", middleware.isLoggedIn, function(req, res){
-    req.logout();
-    req.session.destroy();
+router.post("/logout", function(req, res){
+    req.logOut();
+    req.session.destroy(function(err){
+        if(err){
+            console.log(err);
+        }
+    });
     return res.json({msg: "You have been logged out"});
 });
 

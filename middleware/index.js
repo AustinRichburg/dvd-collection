@@ -11,6 +11,7 @@ var middleware = {
         }
         else{
             console.log("You are not authorized to do that");
+            console.log(req.user);
             return res.json({msg: "You are not logged in"});
         }
     }

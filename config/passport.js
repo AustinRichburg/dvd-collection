@@ -4,10 +4,14 @@ var LocalStrategy = require("passport-local");
 var User = require("../models/user");
 
 passport.serializeUser(function(user, done) {
+    console.log("serializing");
+    console.log(user);
     done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
+    console.log("deserializing");
+    console.log(id);
     User.findById(id, function(err, user) {
         done(err, user);
     });
@@ -17,6 +21,7 @@ passport.use(new LocalStrategy({
     username: "username",
     password: "password"
 }, (username, password, done) => {
+    console.log("here");
     User.findOne({username: username})
         .then((user) => {
             if(!user || !user.validatePassword(password)) {
