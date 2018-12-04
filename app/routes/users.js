@@ -8,7 +8,7 @@ var middleware = require("../middleware/index");
 router.post("/api/register", function(req, res, next){
     var user = new User(
         {
-            username: req.body.username.toLowerCase(),
+            email: req.body.email.toLowerCase(),
             firstName: req.body.firstName,
             lastName: req.body.lastName
         }
@@ -16,7 +16,7 @@ router.post("/api/register", function(req, res, next){
     user.setPassword(req.body.password);
     user.save(function(err){
         if (err) {
-            return res.json({success: false, msg: 'Username already exists.'});
+            return res.json({success: false, msg: 'Email already registered.'});
         }
         req.login(user, function(err){
             if(err){
@@ -28,13 +28,16 @@ router.post("/api/register", function(req, res, next){
     });
 });
 
-router.post("/api/login", middleware.usernameLowerCase, function(req, res, next){
+router.post("/api/login", middleware.emailLowerCase, function(req, res, next){
     passport.authenticate("local", function(err, passportUser, info){
         if(err) {
+            console.log(err);
             return next(err);
         }
         if(!passportUser){
-            return res.json({success: false, msg: "Username or password incorrect."});
+            console.log(err);
+            console.log(info);
+            return res.json({success: false, msg: "Email or password incorrect."});
         }
         req.login(passportUser, function(err){
             if(err){
@@ -56,6 +59,17 @@ router.post("/logout", function(req, res){
         }
     });
     return res.json({msg: "You have been logged out"});
+});
+
+router.get("/users/:id", function(req, res){
+    console.log("here");
+    console.log(req.params.id);
+    User.findById(req.params.id, function(err, user){
+        if(err){
+            res.json({success: false, msg: "Something went wrong"});
+        }
+        return res.send(user);
+    });
 });
 
 module.exports = router;

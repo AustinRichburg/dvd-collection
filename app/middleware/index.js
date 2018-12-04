@@ -1,6 +1,6 @@
 var middleware = {
-    usernameLowerCase: function(req, res, next){
-        req.body.username = req.body.username.toLowerCase();
+    emailLowerCase: function(req, res, next){
+        req.body.email = req.body.email.toLowerCase();
         next();
     },
     isLoggedIn: function(req, res, next){

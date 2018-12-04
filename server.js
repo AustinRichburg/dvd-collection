@@ -4,11 +4,10 @@ var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 var passport = require("passport");
 var session = require("express-session");
-var seedDB = require("./seeds");
-var movieRoutes = require("./routes/movies");
-var userRoutes = require("./routes/users");
 
-//seedDB();
+var movieRoutes = require("./app/routes/movies");
+var userRoutes = require("./app/routes/users");
+
 mongoose.connect(process.env.DATABASEURL)
     .then(
         () => { console.log("Connected to database!"); },
@@ -30,7 +29,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-require('./config/passport');
+require('./app/config/passport');
 
 app.use(movieRoutes);
 app.use(userRoutes);
