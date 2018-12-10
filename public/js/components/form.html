@@ -1,6 +1,16 @@
 <div class="form-group">
     <label for="dvd-title">Title</label>
-    <input autocomplete="off" class="form-control" type="text" name="dvd-title" id="dvd-title" required>
+    <input autocomplete="off" ng-model="movieAdded" ng-change="getMovieSuggestions()" ng-focus="showMovieSuggestions()" ng-blur="hideMovieSuggestions()" class="form-control" type="text" name="dvd-title" id="dvd-title" required>
+    <div class="dropdown">
+        <div class="dropdown-content" ng-repeat="movie in (data.filtered = (suggestedMovies.results | filter: movieAdded | limitTo: 6))" ng-mousedown="fillFormWithSuggestion(movie)">
+            <img ng-src="https://image.tmdb.org/t/p/w154{{movie.poster_path}}" class="dropdown-content-image" alt="Movie Poster">
+            <div class="dropdown-content-body">
+                <span class="font-weight-bold">{{ movie.original_title }}</span><span class="font-weight-bold float-right">{{ movie.release_date }}</span>
+                <p>{{ movie.overview }}</p>
+            </div>
+        </div>
+        <img class="powered-by" src="https://www.themoviedb.org/assets/1/v4/logos/408x161-powered-by-rectangle-green-bb4301c10ddc749b4e79463811a68afebeae66ef43d17bcfd8ff0e60ded7ce99.png" alt="The Movie Database">
+    </div>
 </div>
 <div class="form-group">
     <label for="dvd-year">Year</label>

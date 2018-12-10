@@ -1,12 +1,16 @@
 angular.module("mainModule").service("Movies", ["$rootScope", "$http", "$q", function($rootScope, $http, $q){
-    this.movies = [];
+    var movies = [];
+
+    this.getMoviesLength = function(){
+        return movies.length;
+    }
 
     this.getMovies = function(id){
         var deferred = $q.defer();
         $http.get("/" + id + "/movies", {params: {id: id}})
             .then(function(response){
-                this.movies = response.data;
-                deferred.resolve(this.movies);
+                movies = response.data;
+                deferred.resolve(movies);
                 $rootScope.$$phase || $rootScope.$apply();
             }, function(response){
                 console.log("Something went wrong");
@@ -19,8 +23,8 @@ angular.module("mainModule").service("Movies", ["$rootScope", "$http", "$q", fun
         var deferred = $q.defer();
         $http.post("/" + id + "/movies", {movie: movie})
             .then(function(response){
-                this.movies = response.data;
-                deferred.resolve(this.movies);
+                movies = response.data;
+                deferred.resolve(movies);
                 $rootScope.$$phase || $rootScope.$apply();
             }, function(response){
                 console.log(response);
@@ -45,8 +49,8 @@ angular.module("mainModule").service("Movies", ["$rootScope", "$http", "$q", fun
         var deferred = $q.defer();
         $http.delete("/" + id + "/movies/" + movie._id)
             .then(function(response){
-                this.movies = response.data;
-                deferred.resolve(this.movies);
+                movies = response.data;
+                deferred.resolve(movies);
                 $rootScope.$$phase || $rootScope.$apply();
             }, function(response){
                 console.log(response);

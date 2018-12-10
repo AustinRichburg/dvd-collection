@@ -16,8 +16,8 @@
 </head>
 <body ng-app="mainModule" ng-controller="mainCtrl">
 
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand" href="#">DVD Collection</a>
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="/">DVD Collection</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -34,7 +34,7 @@
             <span ng-switch on="!!user">
                 <ul ng-switch-when="true" class="navbar-nav">
                     <li class="nav-item">
-                        <a ng-click="loadProfile()" class="nav-link">Profile</a>
+                        <span ng-click="loadProfile()" class="nav-link">Profile</span>
                     </li>
                     <li class="nav-item">
                         <a href="/login" class="nav-link" ng-click="logout()">Logout</a>
@@ -52,7 +52,12 @@
         </div>
     </nav>
 
-    <div class="container msg" ng-show="!!msg" id="msg">{{ msg }}</div>
+    <div class="container alert alert-primary alert-dismissible" ng-show="!!msg">
+        {{ msg }}
+        <button type="button" ng-click="msg=''" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 
     <div class="container ng-view"></div>
 

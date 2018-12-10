@@ -22,7 +22,7 @@ angular.module("mainModule").controller("profileCtrl", ["$scope", "$location", "
             $scope.updateUser();
             $location.path("/add");
         }, function(response){
-            $scope.$parent.msg = response;
+            $scope.displayMessage(response);
             $location.path("/register");
         });
     };
@@ -36,13 +36,15 @@ angular.module("mainModule").controller("profileCtrl", ["$scope", "$location", "
             $scope.updateUser();
             console.log(loggedUser);
             Movies.getMovies(loggedUser._id).then(
-                (movies) => { console.log(movies); $scope.movies = movies; },
-                () => { $scope.movies = null; }
+                (movies) => { console.log(movies); },
+                () => { console.log("Something went wrong"); }
             );
             $location.path("/add");
         }, function(response){
-            $scope.$parent.msg = response;
+            $scope.displayMessage(response);
         });
     };
+
+    $scope.moviesLength = Movies.getMoviesLength();
 
 }]);

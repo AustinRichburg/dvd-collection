@@ -8,7 +8,7 @@
 
 var app = angular.module("mainModule", ["ngRoute"]);
 
-app.controller('mainCtrl', ["$scope", "$http", "$location", "$route", "Movies", "Users", function($scope, $http, $location, $route, Movies, Users){
+app.controller('mainCtrl', ["$rootScope", "$scope", "$http", "$location", "$route", "Movies", "Users", function($rootScope, $scope, $http, $location, $route, Movies, Users){
 
     $scope.user = Users.getUser();
 
@@ -16,11 +16,15 @@ app.controller('mainCtrl', ["$scope", "$http", "$location", "$route", "Movies", 
 
     $scope.isActive = function(viewLocation){
         return viewLocation === $location.path();
-    }
+    };
 
     $scope.updateUser = function(){
         $scope.user = Users.getUser();
-    }
+    };
+
+    $scope.displayMessage = function(msg){
+        $scope.msg = msg;
+    };
 
     $scope.logout = function(){
         Users.logout().then(function(response){
@@ -48,6 +52,14 @@ app.controller('mainCtrl', ["$scope", "$http", "$location", "$route", "Movies", 
             $scope.msg = "You must be signed in to access that.";
         }
     };
+
+    $rootScope.$on("$routeChangeStart", function(event, next, current){
+        if(!$scope.user){
+            if(next.templateUrl !== "js/components/login.html" && next.templateUrl !== "js/components/register.html"){
+                $location.path("/login");
+            }
+        }
+    });
 
 }]);
 

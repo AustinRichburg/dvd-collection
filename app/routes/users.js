@@ -31,21 +31,16 @@ router.post("/api/register", function(req, res, next){
 router.post("/api/login", middleware.emailLowerCase, function(req, res, next){
     passport.authenticate("local", function(err, passportUser, info){
         if(err) {
-            console.log(err);
             return next(err);
         }
         if(!passportUser){
-            console.log(err);
-            console.log(info);
             return res.json({success: false, msg: "Email or password incorrect."});
         }
         req.login(passportUser, function(err){
             if(err){
-                console.log("ERROR\n" + err);
                 return next(err);
             }
             passportUser.token = passportUser.generateJwt();
-            console.log("logged in?");
             return res.json({success: true, user: passportUser.toAuthJson()});
         });
     })(req, res, next);
