@@ -4,9 +4,7 @@ var middleware = {
         next();
     },
     isLoggedIn: function(req, res, next){
-        console.log("middleware called");
         if(req.isAuthenticated()){
-            console.log("You are logged in");
             return next();
         }
         else{

@@ -2,7 +2,7 @@
     <label for="dvd-title">Title</label>
     <input autocomplete="off" ng-model="movieAdded" ng-change="getMovieSuggestions()" ng-focus="showMovieSuggestions()" ng-blur="hideMovieSuggestions()" class="form-control" type="text" name="dvd-title" id="dvd-title" required>
     <div class="dropdown">
-        <div class="dropdown-content" ng-repeat="movie in (data.filtered = (suggestedMovies.results | filter: movieAdded | limitTo: 6))" ng-mousedown="fillFormWithSuggestion(movie)">
+        <div class="dropdown-content" ng-repeat="movie in (f.filtered = (suggestedMovies.results | filter: movieAdded | limitTo: 6))" ng-mousedown="fillFormWithSuggestion(movie)">
             <img ng-src="https://image.tmdb.org/t/p/w154{{movie.poster_path}}" class="dropdown-content-image" alt="Movie Poster">
             <div class="dropdown-content-body">
                 <span class="font-weight-bold">{{ movie.original_title }}</span><span class="font-weight-bold float-right">{{ movie.release_date }}</span>

@@ -1,5 +1,8 @@
 angular.module("mainModule").controller("profileCtrl", ["$scope", "$location", "$http", "Movies", "Users", function($scope, $location, $http, Movies, Users){
 
+	/**
+	 * Gets the user data to display for their profile page
+	 */
     $scope.fetchProfile = function(){
         $http.get("/users/" + Users.getUserId())
             .then(function(response){
@@ -11,6 +14,11 @@ angular.module("mainModule").controller("profileCtrl", ["$scope", "$location", "
             });
     };
 
+
+	/**
+	 * Called when a new user registers.
+	 * Adds a new user to the user collection in the DB
+	 */
     $scope.createUser = function(e){
         var user = {
             email: e.srcElement[0].value,
@@ -27,6 +35,10 @@ angular.module("mainModule").controller("profileCtrl", ["$scope", "$location", "
         });
     };
 
+	/**
+	 * Called when a user attempts to login.
+	 * Checks credentials against existing users using PassportJS
+	 */
     $scope.login = function(e){
         var user = {
             email: e.srcElement[0].value,
@@ -45,6 +57,7 @@ angular.module("mainModule").controller("profileCtrl", ["$scope", "$location", "
         });
     };
 
+	// Used to show the number of movies in the collection on the profile page
     $scope.moviesLength = Movies.getMoviesLength();
 
 }]);

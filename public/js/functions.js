@@ -3,14 +3,14 @@
  */
 
  /** Used to create the HTML alert upon adding a movie to the collection */
-var alert = `<div class="alert alert-success alert-dismissible">
+var alert = `<div class="alert alert-success alert-dismissible fade show">
                 Movie added to your collection!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>`;
 
-/** TODO: as is, when there are multiple alerts they act as one and all close at the same time. Find a way around this by making each alert unique */
+
 /**
  * Function used to display the alert when adding a new movie to the collection for 5 seconds.
  */
